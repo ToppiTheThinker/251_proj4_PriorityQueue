@@ -3,27 +3,51 @@
 
 using namespace std;
 
+bool isValidInput(const string &input)
+{
+    if (input.empty())
+        return false;
+
+    //determine that there are only numbers
+    for (int i = 1; i < input.size(); i++)
+        if (!isdigit(input[i]))
+            return false;
+    
+    if (stoi(input) <= 0 || stoi(input) > 2147483647)
+        return false;
+    return true;
+}
+
 int main()
 {
+    //intro text
     cout << "Welcome to Christopher Harrison's implementation of a priority queue!" << endl;
     cout << "How many strings would you like to enter? ";
-    int numStrings;
-    cin >> numStrings;
-    if (numStrings <= 0)
-        cout << "Please enter a number greater than 0." << endl;
-    if (numStrings > 2147483647)
+    string numStringsInput;
+    cin >> numStringsInput;
+    while (!isValidInput(numStringsInput))
     {
-        cout << "Please enter a number less than 2147483648." << endl;
+        cout << "Please enter a valid number." << endl;
+        cin >> numStringsInput;
     }
+    //convert string to int
+    int numStrings = stoi(numStringsInput);
+
     prqueue<string> stringsQueue;
     for (int i = 0; i < numStrings; i++)
     {
         string tmpStr;
-        int tmpP;
+        string tmpPInput;
         cout << "Please enter a string: ";
         cin >> tmpStr;
-        cout << "Please enter a priority: ";
-        cin >> tmpP;
+        cout << "Please enter a priority for your string: ";
+        cin >> tmpPInput;
+        while (!isValidInput(tmpPInput))
+        {
+            cout << "Please enter a valid number." << endl;
+            cin >> tmpPInput;
+        }
+        int tmpP = stoi(tmpPInput);
 
         stringsQueue.enqueue(tmpStr,tmpP);
     }
@@ -53,11 +77,17 @@ int main()
         else if (userChoice == "enqueue")
         {
             string tmpStr;
-            int tmpP;
+            string tmpPInput;
             cout << "Please enter a string: ";
             cin >> tmpStr;
             cout << "Please enter a priority: ";
-            cin >> tmpP;
+            cin >> tmpPInput;
+            while (!isValidInput(tmpPInput))
+            {
+                cout << "Please enter a valid number." << endl;
+                cin >> tmpPInput;
+            }
+            int tmpP = stoi(tmpPInput);
             stringsQueue.enqueue(tmpStr,tmpP);
         }
         else if (userChoice == "reset")
